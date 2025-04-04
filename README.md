@@ -167,11 +167,10 @@ If you'd like to add more modules, features, or improve functionality — feel f
 
 ## 👤 Author
 
-🔗 LinkedIn: [@yourlinkedin](https://www.linkedin.com/in/xhanix/)
+🔗 LinkedIn: [@xhanix](https://www.linkedin.com/in/xhanix/)
 
 ---
 
 ## 📝 License
 
 This project is licensed under the [MIT License](LICENSE)
-```
