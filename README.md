@@ -1,67 +1,177 @@
 # Automate-Metasploit
 
-# Metasploit Automation Scripts
+## Metasploit Automation Scripts
 
-## Overview
-This repository contains a collection of **Bash scripts** designed to automate vulnerability scanning and exploitation using the **Metasploit Framework**. These scripts help penetration testers efficiently execute Metasploit modules across multiple IP addresses while capturing outputs and screenshots for documentation.
+### 📌 Overview
 
-## Features
-- Automates Metasploit auxiliary and exploit modules.
-- Reads target IPs from a file.
-- Saves output logs for later analysis.
-- Takes screenshots of results using `scrot` (for documentation and reporting).
-- Includes error handling to ensure required tools are installed.
+This repository contains a **Bash-based automation script** that helps penetration testers run multiple Metasploit Framework modules across a list of target IP addresses. It logs outputs, takes screenshots, and saves results in module-specific folders — all in one run.
 
-## Prerequisites
-Ensure you have the following installed on your system:
-- **Metasploit Framework** (`msfconsole`)
-- **scrot** (for taking screenshots)
-- **Bash** (Linux/macOS environment recommended)
+---
 
-To install the dependencies:
+## 🚀 Features
+
+- Menu-based module selection
+- Automates both auxiliary and exploit modules
+- Reads target IPs from a text file
+- Saves logs and screenshots per module
+- Runs Metasploit modules silently with `.rc` scripting
+- Captures clean terminal output and module configuration
+- Easy to extend or modify
+
+---
+
+## ✅ Supported Modules
+
+| No. | Metasploit Module |
+|-----|--------------------|
+| 1   | auxiliary/scanner/ftp/anonymous |
+| 2   | auxiliary/scanner/rdp/cve_2019_0708_bluekeep |
+| 3   | auxiliary/scanner/ssl/openssl_heartbleed |
+| 4   | auxiliary/scanner/smb/smb_ms17_010 |
+| 5   | exploit/multi/http/simple_backdoors_exec |
+| 6   | auxiliary/scanner/mysql/mysql_authbypass_hashdump |
+| 7   | auxiliary/scanner/msmq/cve_2023_21554_queuejumper |
+| 8   | auxiliary/scanner/smtp/smtp_relay |
+
+---
+
+## ⚙️ Prerequisites
+
+Ensure the following are installed:
+
+- Metasploit Framework (`msfconsole`)
+- `scrot` (for screenshots)
+- `bash` shell
+
+Install them on a Debian-based system:
+
 ```bash
 sudo apt update && sudo apt install metasploit-framework scrot -y
 ```
 
-## Usage
-1. Clone this repository:
-   ```bash
-   git clone https://github.com/yourusername/metasploit-scripts.git
-   cd metasploit-scripts
-   ```
-2. Ensure your **IP list** is saved in a file (e.g., `ip_addresses.txt`), with one IP per line.
-3. Run the script:
-   ```bash
-   chmod +x bluekeep_scan.sh  # Example script
-   ./bluekeep_scan.sh
-   ```
+---
 
-## Example Scripts
-### **BlueKeep Vulnerability Scanner** (`bluekeep_scan.sh`)
-This script checks for the **CVE-2019-0708 (BlueKeep)** vulnerability on a list of IPs.
-- Uses Metasploit’s `auxiliary/scanner/rdp/cve_2019_0708` module.
-- Saves output and takes screenshots.
+## 📂 Folder Structure
 
-### **Heartbleed Vulnerability Scanner** (`heartbleed_scan.sh`)
-- Uses Metasploit’s `auxiliary/scanner/ssl/openssl_heartbleed`.
-- Detects **CVE-2014-0160 (Heartbleed)**.
+Results are saved in the following folder structure:
 
-### **SMB Exploit Scanner** (`smb_exploit_scan.sh`)
-- Runs SMB-based exploits like EternalBlue.
+```
+outputs/
+├── heartbleed/
+│   ├── logs/
+│   │   └── 192.168.1.10.log
+│   └── screenshots/
+│       └── 192.168.1.10.png
+├── smb_ms17_010/
+│   ├── logs/
+│   └── screenshots/
+...
+```
 
-## Output & Logs
-- All **screenshots** are saved in the `screenshots/` directory.
-- Each scan outputs results in the terminal.
-
-## Customization
-To modify or add a new Metasploit module:
-- Edit the script and replace the Metasploit module name (`use auxiliary/scanner/...`).
-- Adjust `set` commands for required module options.
-- Run the script as usual.
-
-## Disclaimer
-**For educational and authorized security testing purposes only.** Unauthorized use may violate laws and regulations.
+Each module will have:
+- A `logs/` folder for terminal output per IP
+- A `screenshots/` folder for terminal capture
 
 ---
-📌 **Contributions Welcome!** Feel free to submit issues and pull requests. 🚀
 
+## 🧪 Usage
+
+### 1. Clone the Repository
+
+```bash
+git clone https://github.com/yourusername/automate-metasploit.git
+cd automate-metasploit
+```
+
+### 2. Prepare Your IP List
+
+Create a file called `ip_addresses.txt` in the same directory:
+
+```
+192.168.1.100
+10.0.0.55
+```
+
+### 3. Run the Script
+
+Make it executable and start scanning:
+
+```bash
+chmod +x metasploit_automator.sh
+./metasploit_automator.sh
+```
+
+### 4. Select a Module from Menu
+
+You'll see a menu like this:
+
+```
+Select the exploit module to run:
+1) auxiliary/scanner/ftp/anonymous
+2) auxiliary/scanner/rdp/cve_2019_0708_bluekeep
+3) auxiliary/scanner/ssl/openssl_heartbleed
+...
+Enter your choice [1-8]:
+```
+
+Once selected, the script:
+- Runs the module on each IP
+- Saves logs with output from `options` and `run`
+- Takes terminal screenshots using `scrot`
+
+---
+
+## 📄 Output Example
+
+For each IP scanned:
+- Logs are saved to `outputs/<module>/logs/<ip>.log`
+- Screenshots are saved to `outputs/<module>/screenshots/<ip>.png`
+
+Logs contain:
+- The full output of the `options` command (module settings)
+- The result of the `run` command
+- Cleaned, readable text without ANSI escape codes
+
+---
+
+## ✏️ Customization
+
+To add a new module:
+1. Open `metasploit_automator.sh`
+2. Add a new menu entry in the case list
+3. Create a new folder name for it
+4. Define the module path and required `set` commands
+
+Example:
+```bash
+"9" ) module="auxiliary/scanner/http/http_put"
+     folder="http_put"
+     ;;
+```
+
+---
+
+## ⚠️ Disclaimer
+
+> **This tool is for educational and authorized testing purposes only.**
+> Do **NOT** use this on networks or systems you don't own or have explicit permission to test.
+> Unauthorized use of this tool may be illegal and unethical.
+
+---
+
+## 🤝 Contributions Welcome
+
+If you'd like to add more modules, features, or improve functionality — feel free to fork this repo and submit a pull request.
+
+---
+
+## 👤 Author
+
+🔗 LinkedIn: [@yourlinkedin](https://www.linkedin.com/in/xhanix/)
+
+---
+
+## 📝 License
+
+This project is licensed under the [MIT License](LICENSE)
+```
